@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1   # Use the stable NetworkPolicy API.
+kind: NetworkPolicy                # We're defining a NetworkPolicy resource.
+metadata:
+  name: nginx-networkpolicy        # Name of the policy (unique within the namespace).
+  namespace: ram                   # This policy lives in (and applies only within) the 'ram' namespace.
+
+spec:
+  # Which pods are protected by this policy (the "targets")?
+  podSelector:
+    matchLabels:
+      app: nginx                   # Targets all pods in namespace 'ram' with label app=nginx.
+
+  # Which traffic directions are we controlling?
+  policyTypes:
+  - Ingress                        # Control traffic coming INTO the selected pods.
+  - Egress                         # Control traffic going OUT OF the selected pods.
+
+  # Ingress rules: who is allowed to reach the selected pods?
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          access: "true"           # Allow traffic from pods with label access="true" in the SAME namespace.
+                                   # No ports specified => all ports/protocols allowed from these pods.
+
+  # Egress rules: where can the selected pods go?
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          access: "true"           # Allow traffic only TO pods with access="true" in the SAME namespace.
+                                   # No ports specified => all ports/protocols allowed to these pods.

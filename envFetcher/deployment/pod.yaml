@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: express-pod2
+  namespace: test
+  labels:
+    app: express-pod
+    group: nginx
+spec:
+  containers:
+    - name: express-server
+      image: docker.io/library/express-server:v10
+      ports:
+        - containerPort: 3000
+      volumeMounts:
+        - name: express-config-volume
+          mountPath: /etc/config
+        - name: express-secret-volume
+          mountPath: /etc/secret
+  volumes:
+    - name: express-config-volume
+      configMap:
+        name: express-config
+        defaultMode: 0777
+        items:
+          - key: PORT
+            path: PORT
+          - key: NAME
+            path: NAME
+          - key: TEST
+            path: TEST
+          - key: TEST1
+            path: TEST1
+    - name: express-secret-volume
+      secret:
+        secretName: express-secret
+        items:
+          - key: password
+            path: password

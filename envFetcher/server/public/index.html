@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Name or File Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        input,
+        button {
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        #output {
+            margin-top: 20px;
+            white-space: pre-wrap;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hello, Express!</h1>
+    <p>Enter a name to display it, a file name (e.g., index.js) to view its contents, or type <b>port</b> to see the
+        server's port.</p>
+
+    <form id="form">
+        <input type="text" id="input" placeholder="Enter name, file name, or port" required />
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="output"></div>
+
+    <script>
+        document.getElementById("form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const query = document.getElementById("input").value.trim();
+            const output = document.getElementById("output");
+            output.textContent = "Loading...";
+
+            try {
+                const res = await fetch("/search", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ query })
+                });
+
+                const data = await res.json();
+
+                if (data.error) {
+                    output.textContent = "Error: " + data.error;
+                } else if (data.type === "name") {
+                    output.textContent = "You entered: " + data.value;
+                } else if (data.type === "file") {
+                    output.textContent = `File: ${data.filename}\n\n${data.content}`;
+                } else if (data.type === "port") {
+                    output.textContent = "Current port: " + data.value;
+                }
+            } catch (err) {
+                output.textContent = "Error: " + err.message;
+            }
+        });
+    </script>
+</body>
+</html>

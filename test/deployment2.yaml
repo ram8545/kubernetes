@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: newsfeed1
+  namespace: test
+  labels:
+    app: newsfeed1
+    group: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: newsfeed1
+  template:
+    metadata:
+      name: newsfeed1
+      labels:
+        app: newsfeed1
+        group: nginx
+    spec:
+      containers:
+      - name: newsfeed
+        image: newsfeed:news
+        ports:
+        - containerPort: 5050

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: newsfeed1
+  namespace: test
+  labels:
+    app: newsfeed1
+    group: nginx
+spec:
+  containers:
+  - name: newsfeed
+    image: newsfeed:news
+    ports:
+    - containerPort: 5050

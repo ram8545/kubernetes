@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: linuxserver
+spec:
+  containers:
+  - name: linuxserver
+    image: linuxserver/nginx:1.28.0
+    ports:
+    - containerPort: 80

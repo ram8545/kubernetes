@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: first-deployment1
+  labels:
+    app: first-deployment1
+    group: nginx
+  namespace: test
+spec:
+  selector:
+    matchLabels:
+      app: nginx5
+  template:
+    metadata:
+      name: nginx5
+      labels:
+        app: nginx5
+        group: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: ubuntu/nginx:1.18-20.04_beta
+        ports:
+          - containerPort: 80
+

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: newsfeed1
+  namespace: test
+spec:
+  type: ClusterIP
+  selector:
+    app: newsfeed1
+  ports:
+    - protocol: TCP
+      port: 5051
+      targetPort: 5050

@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: db
+  namespace: netpol-demo
+  labels:
+    app: db
+spec:
+  containers:
+  - name: mysql
+    image: mysql:8
+    env:
+    - name: MYSQL_ROOT_PASSWORD
+      value: rootpass
+    - name: MYSQL_DATABASE
+      value: testdb
+    ports:
+    - containerPort: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-service
+  namespace: netpol-demo
+spec:
+  selector:
+    app: db
+  ports:
+  - port: 3306
+    targetPort: 3306

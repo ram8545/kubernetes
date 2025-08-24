@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: resource-deployment1
+  labels:
+    app: resource-app
+  namespace: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: resource-pod
+  template:
+    metadata:
+      name: resource-pod
+      labels:
+        app: resource-pod
+        group: nginx
+      namespace: test
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "50Mi"
+            cpu: "1"
+          limits:
+            memory: "50Mi"
+            cpu: "1"

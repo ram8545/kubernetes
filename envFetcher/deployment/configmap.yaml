@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: express-config
+  namespace: test
+data:
+  PORT: "3000"
+  NAME: Ram Sevak Mishra
+  TEST: t234
+  TEST1: t44

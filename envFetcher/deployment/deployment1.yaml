@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: express-deployment1
+  labels:
+    app: express-app
+  namespace: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: express-pod
+  template:
+    metadata:
+      name: express-pod
+      labels:
+        app: express-pod
+        group: nginx
+      namespace: test
+    spec:
+      containers:
+      - name: express-server
+        image: docker.io/library/express-server:v10
+        ports:
+        - containerPort: 3000
+        env:
+          - name: PORT
+            valueFrom:
+              configMapKeyRef:
+                name: express-config
+                key: PORT
+          - name: NAME
+            valueFrom:
+              configMapKeyRef:
+                name: express-config
+                key: NAME
+          - name: password
+            valueFrom:
+              secretKeyRef:
+                name: express-secret
+                key: password
+        # envFrom:
+        # - secretRef:
+        #     name: express-secret
+        # - configMapRef:
+        #     name: express-config
