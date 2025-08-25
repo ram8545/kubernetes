@@ -3,11 +3,13 @@ kind: Pod
 metadata:
   name: backend
   namespace: netpol-demo
+  labels:
+    app: backend   # <-- Added label to match Service
 spec:
   containers:
     - name: backend
-      image: hashicorp/http-echo
-      args: ["-text=Hello from backend"]
+      image: docker.io/library/express:latest
+      imagePullPolicy: IfNotPresent   # <-- Use local image
       ports:
       - containerPort: 3000
 ---
