@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echo
+  namespace: gateway-test
+spec:
+  replicas: 2
+  selector:
+    matchlabels:
+      app: echo
+  template:
+    metadata:
+      labels:
+        app: echo
+    spec:
+      containers:
+      - name: echo
+        image: hashicorp/http-echo
+        args:
+          - "-text=Hello from Gateway API!"
+        ports:
+        - containerPort: 5678
